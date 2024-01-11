@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Sector {
+  id        Int     @id @default(autoincrement())
+  name      String? @db.VarChar(250)
+  office_id Int?
+  office    Office? @relation(fields: [office_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "sector_ibfk_1")
+
+  @@index([office_id], map: "office_id")
+  @@map("sector")
+}
+
+model Manufacturer {
+  id       Int        @id @default(autoincrement())
+  name     String?    @unique(map: "name") @db.VarChar(250)
+  property Property[]
+
+  @@map("manufacturer")
+}
+
+model Item {
+  id       Int        @id @default(autoincrement())
+  type     String?    @unique(map: "type") @db.VarChar(150)
+  since    Int?
+  property Property[]
+
+  @@map("item")
+}
+
+model Office {
+  id           Int      @id @default(autoincrement())
+  name         String?  @unique(map: "name") @db.VarChar(250)
+  number       String?  @db.VarChar(10)
+  street       String?  @db.VarChar(300)
+  neighborhood String?  @db.VarChar(300)
+  city         String?  @db.VarChar(300)
+  state        String?  @db.VarChar(300)
+  zipcode      String?  @db.VarChar(20)
+  sector       Sector[]
+
+  @@map("office")
+}
+
+model Property {
+  id              Int           @id @default(autoincrement())
+  code            String?       @unique(map: "code") @db.VarChar(150)
+  acquisition     DateTime?     @db.Date
+  status_id       Int?
+  item_id         Int?
+  manufacturer_id Int?
+  date            DateTime?     @db.DateTime(0)
+  status          Status?       @relation(fields: [status_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "property_ibfk_1")
+  item            Item?         @relation(fields: [item_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "property_ibfk_2")
+  manufacturer    Manufacturer? @relation(fields: [manufacturer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "property_ibfk_3")
+
+  @@index([manufacturer_id], map: "manufacturer_id")
+  @@index([item_id], map: "item_id")
+  @@index([status_id], map: "status_id")
+  @@map("property")
+}
+
+model Status {
+  id       Int        @id @default(autoincrement())
+  name     String?    @unique(map: "name") @db.VarChar(250)
+  property Property[]
+
+  @@map("status")
+}
+
+model User {
+  id         Int     @id @default(autoincrement())
+  email      String? @unique(map: "email") @db.VarChar(150)
+  password   String? @db.VarChar(150)
+  first_name String? @db.VarChar(150)
+
+  @@map("user")
+}

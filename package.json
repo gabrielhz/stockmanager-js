@@ -1,0 +1,12 @@
+{
+  "name": "stockmanager",
+  "version": "1.0.0",
+  "main": "src/app.js",
+  "license": "MIT",
+  "devDependencies": {
+    "prisma": "^5.8.0"
+  },
+  "dependencies": {
+    "@prisma/client": "5.8.0"
+  }
+}
