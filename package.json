@@ -2,11 +2,20 @@
   "name": "stockmanager",
   "version": "1.0.0",
   "main": "src/app.js",
+  "scripts": {
+    "devStart": "nodemon src/app.js",
+    "dbGen": "prisma migrate dev --name update",
+    "dbReset": "prisma migrate reset",
+    "dbPull": "prisma db pull"
+  },
   "license": "MIT",
   "devDependencies": {
+    "nodemon": "^3.0.2",
     "prisma": "^5.8.0"
   },
   "dependencies": {
-    "@prisma/client": "5.8.0"
+    "@prisma/client": "5.8.0",
+    "bcrypt": "^5.1.1",
+    "express": "^4.18.2"
   }
 }
