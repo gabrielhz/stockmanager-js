@@ -43,6 +43,9 @@ function createToken(id){
             id: id
             }, 
             secret,
+            {
+                expiresIn: '15m'
+            }
         );
         return token
     } catch { 
